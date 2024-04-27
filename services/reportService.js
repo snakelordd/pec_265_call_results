@@ -87,14 +87,32 @@ class reportService {
         console.log('Creating reports finished')
     }
 
+    /*
+     {
+        call_id: ''
+        report: {
+          "id": "d8410b74-5a84-4cfb-9474-e3b25738890b",
+          "url": "https://go.robotmia.ru/project/196?detalizationFilter=ca3fde02-d891-428dafc3-f1563f20636e&dateFrom=20.02.2024+00%3A00&dateTo=20.02.2024+23%3A59",
+          "cargoIndex": "999959374029",
+          "resultCall": "Окончен по сценарию",
+          "dateOfCalling": "2024-02-20T14:15:19+03:00",
+          "callingResult": "Оповещен получатель",
+          "phone": "79106149888",
+          "callType": "Уведомление получатель разгрузка"
+          "businessType": "Юр.лицо"
+        }
+      }
+     */
     parseCall (callResult) {
         console.log('Parsing call: ', callResult.call.id)
         const report = {}
 
         let callId = callResult.call.id
-
+        const calldate = new Date(callResult.call.init_time).toISOString().slice(0, 10).replace(/(\d+)-(\d+)-(\d+)/, "$3.$2.$1")
+        const callStatus = callResult.call
         const reportObject = {
-            id: callId
+            id: callId,
+            url: `https://go.robotmia.ru/project/265?detalizationFilter=${callId}&dateFrom=${calldate}%3A00&dateTo=${calldate}%3A59`
         }
 
         // Порядок записей переменных в var_log order (Чем выше  - тем позже записано в var_log)
